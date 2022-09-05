@@ -87,7 +87,8 @@ export var UploadProps = {
   height: PropsTypes.number,
   id: PropsTypes.string,
   previewFile: PropsTypes.func,
-  transformFile: PropsTypes.func
+  transformFile: PropsTypes.func,
+  usePopover: PropsTypes.bool,
 };
 
 export var UploadState = {
@@ -108,5 +109,6 @@ export var UploadListProps = {
   showDownloadIcon: PropsTypes.bool,
   showPreviewIcon: PropsTypes.bool,
   locale: UploadLocale,
-  previewFile: PropsTypes.func
+  previewFile: PropsTypes.func,
+  usePopover: PropsTypes.bool,
 };

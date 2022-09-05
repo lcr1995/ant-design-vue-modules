@@ -11,6 +11,8 @@ import Tooltip from '../tooltip';
 import Progress from '../progress';
 import classNames from 'classnames';
 import { UploadListProps } from './interface';
+import Popover from '../popover'
+import Button from '../button'
 
 export default {
   name: 'AUploadList',
@@ -24,7 +26,8 @@ export default {
     showRemoveIcon: true,
     showDownloadIcon: false,
     showPreviewIcon: true,
-    previewFile: previewImage
+    previewFile: previewImage,
+    usePopover: false
   }),
   inject: {
     configProvider: { 'default': function _default() {
@@ -100,10 +103,38 @@ export default {
         showRemoveIcon = _getOptionProps.showRemoveIcon,
         showDownloadIcon = _getOptionProps.showDownloadIcon,
         locale = _getOptionProps.locale,
-        progressAttr = _getOptionProps.progressAttr;
+        progressAttr = _getOptionProps.progressAttr,
+        usePopover = _getOptionProps.usePopover;
 
     var getPrefixCls = this.configProvider.getPrefixCls;
     var prefixCls = getPrefixCls('upload', customizePrefixCls);
+
+    var renderPopoverBtn = h(
+      'div',
+      { slot: 'content' },
+      [
+        h(Button,{
+          attrs:{
+            type: 'link'
+          },
+          on:{
+            'click': function click(e) {
+              return _this2.handlePreview(file, e);
+            }
+          }
+        },'查看'),
+        h(Button,{
+          attrs:{
+            type: 'link'
+          },
+          on:{
+            'click': function click() {
+              return _this2.handleClose(file);
+            }
+          }
+        },'删除')
+      ]
+    )
 
     var list = items.map(function (file) {
       var _classNames, _classNames2;
@@ -303,7 +334,22 @@ export default {
         )]
       );
       var listContainerNameClass = classNames(_defineProperty({}, prefixCls + '-list-picture-card-container', listType === 'picture-card'));
-      return h(
+      return usePopover ? h(
+        'div',
+        { key: file.uid, 'class': listContainerNameClass },
+        [file.status === 'error' ? h(
+          Tooltip,
+          {
+            attrs: { title: message }
+          },
+          [dom]
+        ) : h(Popover,{
+          attrs:{
+            placement: 'right',
+            trigger: 'hover'
+          },
+        }, [renderPopoverBtn,dom])]
+      ) : h(
         'div',
         { key: file.uid, 'class': listContainerNameClass },
         [file.status === 'error' ? h(

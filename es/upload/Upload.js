@@ -15,6 +15,7 @@ import Dragger from './Dragger';
 import UploadList from './UploadList';
 import { UploadProps } from './interface';
 import { T, fileToObject, genPercentAdd, getFileItem, removeFileItem } from './utils';
+import PropsTypes from "ant-design-vue/lib/_util/vue-types";
 
 export { UploadProps };
 
@@ -33,7 +34,8 @@ export default {
     showUploadList: true,
     listType: 'text', // or pictrue
     disabled: false,
-    supportServerRender: true
+    supportServerRender: true,
+    usePopover: false,
   }),
   inject: {
     configProvider: { 'default': function _default() {
@@ -230,7 +232,8 @@ export default {
           listType = _getOptionProps.listType,
           previewFile = _getOptionProps.previewFile,
           disabled = _getOptionProps.disabled,
-          propLocale = _getOptionProps.locale;
+          propLocale = _getOptionProps.locale,
+          usePopover = _getOptionProps.usePopover;
 
       var showRemoveIcon = showUploadList.showRemoveIcon,
           showPreviewIcon = showUploadList.showPreviewIcon,
@@ -245,7 +248,8 @@ export default {
           showRemoveIcon: !disabled && showRemoveIcon,
           showPreviewIcon: showPreviewIcon,
           showDownloadIcon: showDownloadIcon,
-          locale: _extends({}, locale, propLocale)
+          locale: _extends({}, locale, propLocale),
+          usePopover: usePopover
         },
         on: _extends({
           remove: this.handleManualRemove
